@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:geolocator/geolocator.dart';
+
 class LocationInput extends StatefulWidget {
   const LocationInput({super.key});
 
@@ -8,6 +10,17 @@ class LocationInput extends StatefulWidget {
 }
 
 class _LocationInputState extends State<LocationInput> {
+  String? _previewImageUrl;
+  
+  Future<void> _getCurrentLocation() async {
+      await Geolocator.checkPermission();
+      await Geolocator.requestPermission();
+
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    print('ss');
+    print(position);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -20,13 +33,12 @@ class _LocationInputState extends State<LocationInput> {
             height: 150,
             decoration: BoxDecoration(
               border: Border.all(
-                width: 2,
-                //color: const Color(0xffdadada),
-                color: kDefaultIconLightColor
-              ),
+                  width: 2,
+                  //color: const Color(0xffdadada),
+                  color: kDefaultIconLightColor),
               borderRadius: const BorderRadius.all(Radius.circular(10)),
             ),
-            child: const Text('No location chosen!'),
+            child: _getCurrentLocation() == null ? const Text('No location chosen!') : Image.network(_getCurrentLocation.toString()),
           ),
         ),
         Row(
@@ -34,7 +46,7 @@ class _LocationInputState extends State<LocationInput> {
           children: [
             TextButton.icon(
               icon: const Icon(Icons.location_on),
-              onPressed: () {},
+              onPressed: _getCurrentLocation,
               label: const Text('Current location'),
             ),
             ElevatedButton.icon(
