@@ -32,13 +32,14 @@ class PlaceProvider with ChangeNotifier {
         'id': newPlace.id,
         'title': newPlace.title,
         'image': newPlace.image.path,
+        'location_lat': newPlace.location.latitude,
+        'location_lng': newPlace.location.longitude,
+        'address': newPlace.location.address,
       },
     );
   }
 
   Future<void> getPlaces() async {
-    PlaceLocation placeLocation =
-        PlaceLocation(latitude: 1, longitude: 1, address: 'UZB');
     final placesList = await PlacesDB.getData('user_places');
     _list = placesList
         .map(
@@ -46,7 +47,11 @@ class PlaceProvider with ChangeNotifier {
             id: place['id'],
             title: place['title'],
             image: File(place['image']),
-            location: placeLocation,
+            location: PlaceLocation(
+              latitude: place['location_lat'],
+              longitude: place['location_lng'],
+              address: place['address'],
+            ),
           ),
         )
         .toList();
