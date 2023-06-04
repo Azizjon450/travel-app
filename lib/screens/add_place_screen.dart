@@ -1,13 +1,12 @@
 import 'dart:io';
 
+import 'package:adventure/models/place.dart';
 import 'package:adventure/providers/place_provider.dart';
 import 'package:adventure/widgets/location_input.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/image_input.dart';
-
-
 
 class AddPlaceScreen extends StatefulWidget {
   static const routeName = '/add-place';
@@ -20,8 +19,17 @@ class AddPlaceScreen extends StatefulWidget {
 class _AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
   File? _savedImage;
+  PlaceLocation? _placeLocation;
   String _title = '';
   final _formKey = GlobalKey<FormState>();
+
+  void _takePickedLocaton(double latitude, double longitude, String address) {
+    _placeLocation = PlaceLocation(
+      latitude: latitude,
+      longitude: longitude,
+      address: address,
+    );
+  }
 
   void _takeSavedimage(savedImage) {
     _savedImage = savedImage;
@@ -29,13 +37,16 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
 
   void _submit() {
     //if (_titleController.text.isEmpty && _savedImage == null) {
-      if (_title.isNotEmpty && _savedImage != null) {
+    if (_title.isNotEmpty && _savedImage != null && _placeLocation != null) {
       return;
     }
     _formKey.currentState!.save();
-    Provider.of<PlaceProvider>(context, listen: false)
-        .addPlace(//_titleController.text, _savedImage!);
-        _title, _savedImage!);
+    Provider.of<PlaceProvider>(context, listen: false).addPlace(
+      //_titleController.text, _savedImage!);
+      _title,
+      _savedImage!,
+      _placeLocation!,
+    );
     //_formKey.currentState!.save();
     Navigator.of(context).pop();
   }
@@ -87,7 +98,7 @@ class _AddPlaceScreenState extends State<AddPlaceScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const LocationInput(),
+                        LocationInput(_takePickedLocaton),
                       ],
                     ),
                   ),

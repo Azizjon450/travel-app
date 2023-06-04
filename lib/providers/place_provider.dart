@@ -16,9 +16,7 @@ class PlaceProvider with ChangeNotifier {
     return _list.firstWhere((place) => place.id == id);
   }
 
-  void addPlace(String title, File image) async {
-    PlaceLocation placeLocation =
-        PlaceLocation(latitude: 1, longitude: 1, address: 'UZB');
+  void addPlace(String title, File image, PlaceLocation placeLocation) async {
     final newPlace = Place(
       id: UniqueKey().toString(),
       title: title,

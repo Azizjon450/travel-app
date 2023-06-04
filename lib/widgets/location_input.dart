@@ -7,7 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({super.key});
+  final Function takePickedLocaton;
+  const LocationInput(this.takePickedLocaton, {super.key});
 
   @override
   State<LocationInput> createState() => _LocationInputState();
@@ -44,6 +45,14 @@ class _LocationInputState extends State<LocationInput> {
       _previewImageUrl = LocationHelper.getLocationImage(
           latitude: location.latitude, longtitude: location.longitude);
     });
+    final String formattedAddress =
+        await LocationHelper.getFormattedAddress(location);
+
+    widget.takePickedLocaton(
+      location.latitude,
+      location.longitude,
+      formattedAddress,
+    );
   }
 
   @override
@@ -96,7 +105,6 @@ class _LocationInputState extends State<LocationInput> {
                   return;
                 }
                 _getLocationImage(selectedLocation);
-                await LocationHelper.getFormattedAddress(selectedLocation);
               },
               label: const Text('Select on map'),
             ),
