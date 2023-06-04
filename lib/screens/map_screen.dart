@@ -30,7 +30,9 @@ class _MapScreenState extends State<MapScreen> {
         actions: [
           if (widget.isSelicting)
             IconButton(
-              onPressed: _pickedLocation == null ? null : () => Navigator.of(context).pop(_pickedLocation),
+              onPressed: _pickedLocation == null
+                  ? null
+                  : () => Navigator.of(context).pop(_pickedLocation),
               icon: const Icon(Icons.check),
             ),
         ],
@@ -44,12 +46,16 @@ class _MapScreenState extends State<MapScreen> {
           zoom: 16,
         ),
         onTap: widget.isSelicting ? _setLocation : (LatLng location) {},
-        markers: _pickedLocation == null
+        markers: widget.isSelicting && _pickedLocation == null
             ? {}
             : {
                 Marker(
                   markerId: MarkerId('m1'),
-                  position: _pickedLocation!,
+                  position: _pickedLocation ??
+                      LatLng(
+                        widget.placeLocation.latitude,
+                        widget.placeLocation.longitude,
+                      ),
                 ),
               },
       ),

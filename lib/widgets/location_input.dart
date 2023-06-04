@@ -35,9 +35,13 @@ class _LocationInputState extends State<LocationInput> {
     await Geolocator.checkPermission();
     await Geolocator.requestPermission();
 
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    _getLocationImage(LatLng(position.latitude, position.longitude));
+    try {
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      _getLocationImage(LatLng(position.latitude, position.longitude));
+    } catch (e) {
+      return;
+    }
   }
 
   void _getLocationImage(LatLng location) async {

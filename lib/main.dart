@@ -1,5 +1,6 @@
 import 'package:adventure/providers/place_provider.dart';
 import 'package:adventure/screens/add_place_screen.dart';
+import 'package:adventure/screens/place_details_screen.dart';
 import 'package:adventure/screens/places_list_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
         home: const PlaceListScreen(),
         routes: {
           AddPlaceScreen.routeName:(context) => const AddPlaceScreen(),
+          PlaceDetailScreen.routeName: (ctx) => const PlaceDetailScreen(),
         },
       ),
     );

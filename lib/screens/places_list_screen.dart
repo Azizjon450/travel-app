@@ -1,5 +1,6 @@
 import 'package:adventure/providers/place_provider.dart';
 import 'package:adventure/screens/add_place_screen.dart';
+import 'package:adventure/screens/place_details_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +47,10 @@ class PlaceListScreen extends StatelessWidget {
                           Text(placeProvider.list[index].location.address),
                       onTap: () {
                         //detail_screen
+                        Navigator.of(context).pushNamed(
+                          PlaceDetailScreen.routeName,
+                          arguments: placeProvider.list[index].id,
+                        );
                       },
                     ),
                   );
